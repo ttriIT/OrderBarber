@@ -11,6 +11,8 @@ import 'providers/chat_provider.dart';
 import 'providers/notification_provider.dart';
 import 'providers/review_provider.dart';
 import 'providers/admin_provider.dart';
+import 'providers/barber_schedule_provider.dart';
+import 'providers/barber_income_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProvider(create: (_) => ReviewProvider()),
         ChangeNotifierProvider(create: (_) => AdminProvider()),
+        ChangeNotifierProvider(create: (_) => BarberScheduleProvider()),
+        ChangeNotifierProvider(create: (_) => BarberIncomeProvider()),
       ],
       child: MaterialApp(
         title: 'BarberShop',

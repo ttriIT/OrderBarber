@@ -4,6 +4,9 @@ import '../../core/theme/app_colors.dart';
 import '../../core/widgets/custom_button.dart';
 import '../../core/widgets/custom_text_field.dart';
 import '../../providers/auth_provider.dart';
+import '../../core/constants/app_constants.dart';
+import '../../data/mock/mock_barbers.dart';
+import '../../data/models/barber_model.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -17,14 +20,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
+  
+  // Barber specific controllers
+  late TextEditingController _skillsController;
+  late TextEditingController _experienceController;
+  
+  BarberModel? _barber;
+  bool _isBarber = false;
 
   @override
   void initState() {
     super.initState();
     final user = context.read<AuthProvider>().currentUser;
+    _isBarber = user?.role == UserRole.barber;
+    
     _nameController = TextEditingController(text: user?.name ?? '');
     _emailController = TextEditingController(text: user?.email ?? '');
     _phoneController = TextEditingController(text: user?.phone ?? '');
+    
+    _skillsController = TextEditingController();
+    _experienceController = TextEditingController();
+
+    if (_isBarber && user != null) {
+      _barber = MockBarbers.getByPhone(user.phone) ?? MockBarbers.getById(user.id);
+      if (_barber != null) {
+        _skillsController.text = _barber!.skills.join(', ');
+        _experienceController.text = _barber!.yearsOfExperience.toString();
+      }
+    }
   }
 
   @override
@@ -32,16 +55,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _skillsController.dispose();
+    _experienceController.dispose();
     super.dispose();
   }
 
   Future<void> _handleSave() async {
     if (_formKey.currentState?.validate() ?? false) {
       final authProvider = context.read<AuthProvider>();
+      
+      List<String>? skills;
+      int? experience;
+      
+      if (_isBarber) {
+        skills = _skillsController.text
+            .split(',')
+            .map((s) => s.trim())
+            .where((s) => s.isNotEmpty)
+            .toList();
+        experience = int.tryParse(_experienceController.text);
+      }
+
       final success = await authProvider.updateProfile(
         name: _nameController.text,
         email: _emailController.text,
         phone: _phoneController.text,
+        skills: skills,
+        yearsOfExperience: experience,
       );
 
       if (success && mounted) {
@@ -69,6 +109,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Avatar
               Center(
@@ -104,6 +145,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 32),
 
+              _buildSectionTitle('Thông tin cơ bản'),
+              const SizedBox(height: 16),
               // Name
               CustomTextField(
                 controller: _nameController,
@@ -149,6 +192,46 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   return null;
                 },
               ),
+              
+              if (_isBarber) ...[
+                const SizedBox(height: 32),
+                _buildSectionTitle('Thông tin nghề nghiệp'),
+                const SizedBox(height: 16),
+                
+                // Skills
+                CustomTextField(
+                  controller: _skillsController,
+                  label: 'Kỹ năng (phân cách bằng dấu phẩy)',
+                  hint: 'Ví dụ: Cắt tóc, Fade, Cạo râu...',
+                  prefixIcon: const Icon(Icons.star_outline),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập ít nhất một kỹ năng';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                
+                // Experience
+                CustomTextField(
+                  controller: _experienceController,
+                  label: 'Số năm kinh nghiệm',
+                  hint: 'Ví dụ: 5',
+                  keyboardType: TextInputType.number,
+                  prefixIcon: const Icon(Icons.work_history_outlined),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập số năm kinh nghiệm';
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'Vui lòng nhập số hợp lệ';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+              
               const SizedBox(height: 40),
 
               // Save button
@@ -164,6 +247,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: AppColors.primary,
       ),
     );
   }

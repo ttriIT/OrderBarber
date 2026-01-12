@@ -4,7 +4,7 @@ import '../models/barber_model.dart';
 class MockBarbers {
   MockBarbers._();
 
-  static final List<BarberModel> barbers = [
+  static final List<BarberModel> _barbers = [
     const BarberModel(
       id: 'barber_1',
       name: 'Phạm Minh Đức',
@@ -85,19 +85,42 @@ class MockBarbers {
     ),
   ];
 
+  static List<BarberModel> get barbers => List.unmodifiable(_barbers);
+
   static List<BarberModel> getByShopId(String shopId) {
-    return barbers.where((b) => b.shopId == shopId).toList();
+    return _barbers.where((b) => b.shopId == shopId).toList();
   }
 
   static BarberModel? getById(String id) {
     try {
-      return barbers.firstWhere((b) => b.id == id);
+      return _barbers.firstWhere((b) => b.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static BarberModel? getByPhone(String phone) {
+    try {
+      return _barbers.firstWhere((b) => b.phone == phone);
     } catch (_) {
       return null;
     }
   }
 
   static List<BarberModel> getAvailable(String shopId) {
-    return barbers.where((b) => b.shopId == shopId && b.isAvailable).toList();
+    return _barbers.where((b) => b.shopId == shopId && b.isAvailable).toList();
+  }
+
+  static void updateBarber(BarberModel updatedBarber) {
+    final index = _barbers.indexWhere((b) => b.id == updatedBarber.id);
+    if (index != -1) {
+      _barbers[index] = updatedBarber;
+    } else {
+      // If not found by ID, try match by phone
+      final phoneIndex = _barbers.indexWhere((b) => b.phone == updatedBarber.phone);
+      if (phoneIndex != -1) {
+        _barbers[phoneIndex] = updatedBarber;
+      }
+    }
   }
 }

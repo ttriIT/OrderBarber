@@ -20,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final FormFieldValidator<String>? validator;
   final FocusNode? focusNode;
+  final TextAlign textAlign;
 
   const CustomTextField({
     super.key,
@@ -40,6 +41,7 @@ class CustomTextField extends StatelessWidget {
     this.onTap,
     this.validator,
     this.focusNode,
+    this.textAlign = TextAlign.start,
   });
 
   @override
@@ -70,6 +72,7 @@ class CustomTextField extends StatelessWidget {
           onChanged: onChanged,
           onTap: onTap,
           validator: validator,
+          textAlign: textAlign,
           decoration: InputDecoration(
             hintText: hint,
             errorText: errorText,

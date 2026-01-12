@@ -13,9 +13,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  bool _emailSent = false;
 
   @override
   void dispose() {
@@ -23,24 +21,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
-  Future<void> _handleSubmit() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      final authProvider = context.read<AuthProvider>();
-      final success = await authProvider.requestPasswordReset(
-        _emailController.text,
-      );
+  Future<void> _handleReset() async {
+    if (_emailController.text.isNotEmpty) {
+      final success = await context.read<AuthProvider>().requestPasswordReset(
+            _emailController.text,
+          );
 
       if (success && mounted) {
-        setState(() {
-          _emailSent = true;
-        });
-      } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Có lỗi xảy ra, vui lòng thử lại'),
-            backgroundColor: AppColors.error,
+            content: Text('Hướng dẫn đặt lại mật khẩu đã được gửi đến email của bạn'),
+            backgroundColor: AppColors.success,
           ),
         );
+        Navigator.pop(context);
       }
     }
   }
@@ -48,127 +42,37 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: _emailSent ? _buildSuccessContent() : _buildFormContent(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFormContent() {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
-          const Text(
-            'Quên mật khẩu?',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+      appBar: AppBar(title: const Text('Quên mật khẩu')),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            const Text(
+              'Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu',
+              textAlign: TextAlign.center,
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Nhập email đã đăng ký để nhận link đặt lại mật khẩu',
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textSecondary,
-              height: 1.5,
+            const SizedBox(height: 32),
+            CustomTextField(
+              controller: _emailController,
+              label: 'Email',
+              hint: 'example@email.com',
+              keyboardType: TextInputType.emailAddress,
+              prefixIcon: const Icon(Icons.email_outlined),
+              validator: (v) => v?.isEmpty ?? true ? 'Vui lòng nhập email' : null,
             ),
-          ),
-          const SizedBox(height: 40),
-
-          // Email field
-          CustomTextField(
-            controller: _emailController,
-            label: 'Email',
-            hint: 'Nhập địa chỉ email',
-            keyboardType: TextInputType.emailAddress,
-            prefixIcon: const Icon(Icons.email_outlined),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Vui lòng nhập email';
-              }
-              if (!value.contains('@')) {
-                return 'Email không hợp lệ';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 32),
-
-          // Submit button
-          Consumer<AuthProvider>(
-            builder: (context, auth, child) {
-              return CustomButton(
-                text: 'Gửi yêu cầu',
-                isLoading: auth.isLoading,
-                onPressed: _handleSubmit,
-              );
-            },
-          ),
-        ],
+            const SizedBox(height: 32),
+            Consumer<AuthProvider>(
+              builder: (context, auth, _) {
+                return CustomButton(
+                  text: 'Gửi yêu cầu',
+                  isLoading: auth.isLoading,
+                  onPressed: _handleReset,
+                );
+              },
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _buildSuccessContent() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            color: AppColors.success.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(
-            Icons.mark_email_read_outlined,
-            size: 50,
-            color: AppColors.success,
-          ),
-        ),
-        const SizedBox(height: 32),
-        const Text(
-          'Email đã được gửi!',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Text(
-          'Vui lòng kiểm tra hộp thư ${_emailController.text} để đặt lại mật khẩu',
-          style: TextStyle(
-            fontSize: 16,
-            color: AppColors.textSecondary,
-            height: 1.5,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 40),
-        CustomButton(
-          text: 'Quay lại đăng nhập',
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
     );
   }
 }

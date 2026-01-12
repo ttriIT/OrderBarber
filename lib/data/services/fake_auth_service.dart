@@ -1,6 +1,7 @@
 import '../models/user_model.dart';
 import '../mock/mock_users.dart';
 import '../../core/constants/app_constants.dart';
+import '../mock/mock_barbers.dart';
 
 /// Fake authentication service for mock login/logout
 /// TODO: Replace with real API calls when backend is ready
@@ -86,12 +87,13 @@ class FakeAuthService {
     _currentUser = null;
   }
 
-  /// Update user profile
   Future<UserModel?> updateProfile({
     required String name,
     String? email,
     String? phone,
     String? avatarUrl,
+    List<String>? skills,
+    int? yearsOfExperience,
   }) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
@@ -102,6 +104,20 @@ class FakeAuthService {
         phone: phone ?? _currentUser!.phone,
         avatarUrl: avatarUrl ?? _currentUser!.avatarUrl,
       );
+
+      // If user is a barber, update their barber details too
+      if (_currentUser!.role == UserRole.barber) {
+        final barber = MockBarbers.getByPhone(_currentUser!.phone) ?? MockBarbers.getById(_currentUser!.id);
+        if (barber != null) {
+          MockBarbers.updateBarber(barber.copyWith(
+            name: name,
+            phone: phone ?? _currentUser!.phone,
+            avatarUrl: avatarUrl ?? _currentUser!.avatarUrl,
+            skills: skills,
+            yearsOfExperience: yearsOfExperience,
+          ));
+        }
+      }
     }
 
     return _currentUser;

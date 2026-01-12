@@ -139,6 +139,8 @@ class AuthProvider extends ChangeNotifier {
     String? email,
     String? phone,
     String? avatarUrl,
+    List<String>? skills,
+    int? yearsOfExperience,
   }) async {
     _isLoading = true;
     notifyListeners();
@@ -149,6 +151,8 @@ class AuthProvider extends ChangeNotifier {
         email: email,
         phone: phone,
         avatarUrl: avatarUrl,
+        skills: skills,
+        yearsOfExperience: yearsOfExperience,
       );
 
       if (user != null) {

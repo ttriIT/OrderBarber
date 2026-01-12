@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../core/constants/app_constants.dart';
+import '../../core/widgets/role_guard.dart';
 
 // Auth screens
 import '../../presentation/auth/splash_screen.dart';
@@ -9,6 +11,8 @@ import '../../presentation/auth/forgot_password_screen.dart';
 
 // Home screens
 import '../../presentation/home/main_navigation.dart';
+import '../../presentation/schedule/barber_schedule_screen.dart';
+import '../../presentation/income/barber_income_screen.dart';
 
 // Shop screens
 import '../../presentation/shop/shop_list_screen.dart';
@@ -47,6 +51,7 @@ import '../../presentation/admin/admin_dashboard_screen.dart';
 import '../../presentation/admin/user_management_screen.dart';
 import '../../presentation/admin/shop_management_screen.dart';
 import '../../presentation/admin/statistics_screen.dart';
+import '../../presentation/admin/service_management_screen.dart';
 
 class AppRoutes {
   // Auth routes
@@ -58,6 +63,8 @@ class AppRoutes {
 
   // Main navigation
   static const String main = '/main';
+  static const String barberSchedule = '/barber-schedule';
+  static const String barberIncome = '/barber-income';
 
   // Shop routes
   static const String shopList = '/shop-list';
@@ -119,6 +126,22 @@ class AppRoutes {
       // Main
       case main:
         return _buildRoute(const MainNavigation(), settings);
+      case barberSchedule:
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.barber],
+            child: BarberScheduleScreen(),
+          ),
+          settings,
+        );
+      case barberIncome:
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.barber],
+            child: BarberIncomeScreen(),
+          ),
+          settings,
+        );
 
       // Shop
       case shopList:
@@ -146,11 +169,29 @@ class AppRoutes {
 
       // Booking
       case bookingDate:
-        return _buildRoute(const BookingDateScreen(), settings);
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.customer],
+            child: BookingDateScreen(),
+          ),
+          settings,
+        );
       case bookingTime:
-        return _buildRoute(const BookingTimeScreen(), settings);
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.customer],
+            child: BookingTimeScreen(),
+          ),
+          settings,
+        );
       case bookingConfirmation:
-        return _buildRoute(const BookingConfirmationScreen(), settings);
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.customer],
+            child: BookingConfirmationScreen(),
+          ),
+          settings,
+        );
       case bookingSuccess:
         return _buildRoute(const BookingSuccessScreen(), settings);
 
@@ -203,13 +244,45 @@ class AppRoutes {
 
       // Admin
       case adminDashboard:
-        return _buildRoute(const AdminDashboardScreen(), settings);
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.admin],
+            child: AdminDashboardScreen(),
+          ),
+          settings,
+        );
       case userManagement:
-        return _buildRoute(const UserManagementScreen(), settings);
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.admin],
+            child: UserManagementScreen(),
+          ),
+          settings,
+        );
       case shopManagement:
-        return _buildRoute(const ShopManagementScreen(), settings);
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.admin],
+            child: ShopManagementScreen(),
+          ),
+          settings,
+        );
+      case serviceManagement:
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.admin],
+            child: ServiceManagementScreen(),
+          ),
+          settings,
+        );
       case statistics:
-        return _buildRoute(const StatisticsScreen(), settings);
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.admin],
+            child: StatisticsScreen(),
+          ),
+          settings,
+        );
 
       default:
         return _buildRoute(

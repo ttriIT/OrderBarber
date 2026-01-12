@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/routes/app_routes.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/booking_provider.dart';
 import '../../data/models/booking_model.dart';
@@ -149,6 +150,39 @@ class _BarberHomeScreenState extends State<BarberHomeScreen> {
                   ),
                 ),
 
+                // Quick Actions
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+                  child: Row(
+                    children: [
+                      _buildQuickAction(
+                        context,
+                        icon: Icons.account_balance_wallet,
+                        label: 'Thu nhập',
+                        color: Colors.orange,
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.barberIncome),
+                      ),
+                      const SizedBox(width: 12),
+                      _buildQuickAction(
+                        context,
+                        icon: Icons.calendar_month,
+                        label: 'Lịch trình',
+                        color: Colors.blue,
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.barberSchedule),
+                      ),
+                      const SizedBox(width: 12),
+                      _buildQuickAction(
+                        context,
+                        icon: Icons.message,
+                        label: 'Tin nhắn',
+                        color: Colors.green,
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.chatList),
+                      ),
+                    ],
+                  ),
+                ),
+                
+
                 // Today's appointments
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -163,7 +197,9 @@ class _BarberHomeScreenState extends State<BarberHomeScreen> {
                         ),
                       ),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.barberSchedule);
+                        },
                         icon: const Icon(Icons.calendar_month, size: 18),
                         label: const Text('Xem lịch'),
                       ),
@@ -358,6 +394,43 @@ class _BarberHomeScreenState extends State<BarberHomeScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildQuickAction(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: color.withOpacity(0.2)),
+          ),
+          child: Column(
+            children: [
+              Icon(icon, color: color, size: 28),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
