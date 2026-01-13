@@ -12,10 +12,10 @@ import '../order/order_list_screen.dart';
 import '../chat/chat_list_screen.dart';
 import '../profile/profile_screen.dart';
 import '../notification/notification_screen.dart';
-import '../admin/admin_dashboard_screen.dart';
 import '../admin/user_management_screen.dart';
 import '../admin/shop_management_screen.dart';
 import '../admin/statistics_screen.dart';
+import '../admin/promotion_management_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -87,6 +87,7 @@ class _MainNavigationState extends State<MainNavigation> {
       const AdminHomeScreen(),
       const UserManagementScreen(),
       const ShopManagementScreen(),
+      const PromotionManagementScreen(),
       const StatisticsScreen(),
       const ProfileScreen(),
     ];
@@ -196,6 +197,11 @@ class _MainNavigationState extends State<MainNavigation> {
           icon: Icon(Icons.store_outlined),
           activeIcon: Icon(Icons.store),
           label: 'Shops',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.discount_outlined),
+          activeIcon: Icon(Icons.discount),
+          label: 'Khuyến mãi',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.bar_chart_outlined),

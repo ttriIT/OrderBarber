@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../data/models/user_model.dart';
 import '../data/models/shop_model.dart';
 import '../data/models/service_model.dart';
+import '../data/models/promotion_model.dart';
 import '../data/services/fake_admin_service.dart';
 import '../core/constants/app_constants.dart';
 
@@ -15,6 +16,7 @@ class AdminProvider extends ChangeNotifier {
   List<UserModel> _users = [];
   List<ShopModel> _shops = [];
   List<ServiceModel> _services = [];
+  List<PromotionModel> _promotions = [];
   Map<BookingStatus, int> _bookingsByStatus = {};
   bool _isLoading = false;
 
@@ -25,6 +27,7 @@ class AdminProvider extends ChangeNotifier {
   List<UserModel> get users => _users;
   List<ShopModel> get shops => _shops;
   List<ServiceModel> get services => _services;
+  List<PromotionModel> get promotions => _promotions;
   Map<BookingStatus, int> get bookingsByStatus => _bookingsByStatus;
   bool get isLoading => _isLoading;
 
@@ -89,6 +92,51 @@ class AdminProvider extends ChangeNotifier {
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  /// Load promotions for management
+  Future<void> loadPromotions() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _promotions = await _adminService.getAllPromotions();
+    } catch (e) {
+      debugPrint('Error loading promotions: $e');
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  /// Add new promotion
+  Future<void> addPromotion(PromotionModel promotion) async {
+    try {
+      await _adminService.addPromotion(promotion);
+      await loadPromotions();
+    } catch (e) {
+      debugPrint('Error adding promotion: $e');
+    }
+  }
+
+  /// Update promotion
+  Future<void> updatePromotion(PromotionModel promotion) async {
+    try {
+      await _adminService.updatePromotion(promotion);
+      await loadPromotions();
+    } catch (e) {
+      debugPrint('Error updating promotion: $e');
+    }
+  }
+
+  /// Delete promotion
+  Future<void> deletePromotion(String id) async {
+    try {
+      await _adminService.deletePromotion(id);
+      await loadPromotions();
+    } catch (e) {
+      debugPrint('Error deleting promotion: $e');
+    }
   }
 
   /// Filter users by role

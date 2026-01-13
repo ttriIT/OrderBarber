@@ -1,11 +1,12 @@
+import '../models/promotion_model.dart';
 import '../models/user_model.dart';
 import '../models/shop_model.dart';
 import '../models/service_model.dart';
-import '../models/booking_model.dart';
 import '../mock/mock_users.dart';
 import '../mock/mock_shops.dart';
 import '../mock/mock_services.dart';
 import '../mock/mock_bookings.dart';
+import '../mock/mock_promotions.dart';
 import '../../core/constants/app_constants.dart';
 
 /// Fake admin service for dashboard and management
@@ -91,5 +92,29 @@ class FakeAdminService {
       BookingStatus.completed: bookings.where((b) => b.status == BookingStatus.completed).length,
       BookingStatus.cancelled: bookings.where((b) => b.status == BookingStatus.cancelled).length,
     };
+  }
+
+  /// Get all promotions for management
+  Future<List<PromotionModel>> getAllPromotions() async {
+    await Future.delayed(const Duration(milliseconds: 400));
+    return MockPromotions.promotions;
+  }
+
+  /// Add new promotion
+  Future<void> addPromotion(PromotionModel promotion) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    MockPromotions.addPromotion(promotion);
+  }
+
+  /// Update promotion
+  Future<void> updatePromotion(PromotionModel promotion) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    MockPromotions.updatePromotion(promotion);
+  }
+
+  /// Delete promotion
+  Future<void> deletePromotion(String id) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    MockPromotions.deletePromotion(id);
   }
 }

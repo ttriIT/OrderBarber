@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/routes/app_routes.dart';
 import '../../providers/admin_provider.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
@@ -71,6 +72,51 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         value: '${stats['totalShops'] ?? 0}',
                         icon: Icons.store,
                         color: AppColors.secondary,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Management Actions
+                  const Text(
+                    'Quản lý',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 2.5,
+                    children: [
+                      _buildActionCard(
+                        context,
+                        title: 'Người dùng',
+                        icon: Icons.people_outline,
+                        route: AppRoutes.userManagement,
+                      ),
+                      _buildActionCard(
+                        context,
+                        title: 'Cửa hàng',
+                        icon: Icons.storefront_outlined,
+                        route: AppRoutes.shopManagement,
+                      ),
+                      _buildActionCard(
+                        context,
+                        title: 'Dịch vụ',
+                        icon: Icons.settings_outlined,
+                        route: AppRoutes.serviceManagement,
+                      ),
+                      _buildActionCard(
+                        context,
+                        title: 'Khuyến mãi',
+                        icon: Icons.discount_outlined,
+                        route: AppRoutes.promotionManagement,
                       ),
                     ],
                   ),
@@ -169,6 +215,44 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActionCard(
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required String route,
+  }) {
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, route),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: AppColors.primary, size: 24),
+            const SizedBox(width: 12),
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -52,6 +52,7 @@ import '../../presentation/admin/user_management_screen.dart';
 import '../../presentation/admin/shop_management_screen.dart';
 import '../../presentation/admin/statistics_screen.dart';
 import '../../presentation/admin/service_management_screen.dart';
+import '../../presentation/admin/promotion_management_screen.dart';
 
 class AppRoutes {
   // Auth routes
@@ -103,6 +104,7 @@ class AppRoutes {
   static const String userManagement = '/user-management';
   static const String shopManagement = '/shop-management';
   static const String serviceManagement = '/service-management';
+  static const String promotionManagement = '/promotion-management';
   static const String statistics = '/statistics';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -272,6 +274,14 @@ class AppRoutes {
           const RoleGuard(
             allowedRoles: [UserRole.admin],
             child: ServiceManagementScreen(),
+          ),
+          settings,
+        );
+      case promotionManagement:
+        return _buildRoute(
+          const RoleGuard(
+            allowedRoles: [UserRole.admin],
+            child: PromotionManagementScreen(),
           ),
           settings,
         );
