@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../data/models/notification_model.dart';
-import '../data/services/fake_notification_service.dart';
+import '../data/services/notification_service.dart';
 
 /// NotificationProvider for managing notifications
 class NotificationProvider extends ChangeNotifier {
-  final FakeNotificationService _notificationService = FakeNotificationService();
+  final NotificationService _notificationService = NotificationService();
 
   List<NotificationModel> _notifications = [];
   int _unreadCount = 0;

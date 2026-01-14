@@ -67,12 +67,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         icon: Icons.people,
                         color: AppColors.info,
                       ),
-                      _buildStatCard(
-                        title: 'Tiệm',
-                        value: '${stats['totalShops'] ?? 0}',
-                        icon: Icons.store,
-                        color: AppColors.secondary,
-                      ),
                     ],
                   ),
                   const SizedBox(height: 24),
@@ -99,18 +93,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         title: 'Người dùng',
                         icon: Icons.people_outline,
                         route: AppRoutes.userManagement,
-                      ),
-                      _buildActionCard(
-                        context,
-                        title: 'Cửa hàng',
-                        icon: Icons.storefront_outlined,
-                        route: AppRoutes.shopManagement,
-                      ),
-                      _buildActionCard(
-                        context,
-                        title: 'Dịch vụ',
-                        icon: Icons.settings_outlined,
-                        route: AppRoutes.serviceManagement,
                       ),
                       _buildActionCard(
                         context,

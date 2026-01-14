@@ -3,12 +3,12 @@ import '../data/models/booking_model.dart';
 import '../data/models/service_model.dart';
 import '../data/models/barber_model.dart';
 import '../data/models/shop_model.dart';
-import '../data/services/fake_booking_service.dart';
+import '../data/services/booking_service.dart';
 import '../core/constants/app_constants.dart';
 
 /// BookingProvider for managing booking flow and state
 class BookingProvider extends ChangeNotifier {
-  final FakeBookingService _bookingService = FakeBookingService();
+  final BookingService _bookingService = BookingService();
 
   // Booking form state
   ShopModel? _selectedShop;

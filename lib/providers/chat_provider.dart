@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../data/models/message_model.dart';
-import '../data/services/fake_chat_service.dart';
+import '../data/services/chat_service.dart';
 
 /// ChatProvider for managing chat and messaging state
 class ChatProvider extends ChangeNotifier {
-  final FakeChatService _chatService = FakeChatService();
+  final ChatService _chatService = ChatService();
 
   List<ConversationModel> _conversations = [];
   List<MessageModel> _messages = [];

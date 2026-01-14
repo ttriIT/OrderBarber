@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import '../data/services/schedule_service.dart';
 import '../core/constants/app_constants.dart';
 
 /// Provider for managing barber working schedule
 class BarberScheduleProvider extends ChangeNotifier {
+  final ScheduleService _scheduleService = ScheduleService();
+  
   // Map of date to list of blocked time slots
   // Key: YYYY-MM-DD
   final Map<String, List<String>> _blockedSlots = {};

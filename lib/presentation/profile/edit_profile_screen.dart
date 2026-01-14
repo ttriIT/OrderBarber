@@ -5,7 +5,6 @@ import '../../core/widgets/custom_button.dart';
 import '../../core/widgets/custom_text_field.dart';
 import '../../providers/auth_provider.dart';
 import '../../core/constants/app_constants.dart';
-import '../../data/mock/mock_barbers.dart';
 import '../../data/models/barber_model.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -42,11 +41,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _experienceController = TextEditingController();
 
     if (_isBarber && user != null) {
-      _barber = MockBarbers.getByPhone(user.phone) ?? MockBarbers.getById(user.id);
-      if (_barber != null) {
-        _skillsController.text = _barber!.skills.join(', ');
-        _experienceController.text = _barber!.yearsOfExperience.toString();
-      }
+      // Skills and experience should be part of the User model or fetched separately
+      // For now, we use empty or default values if not provided in user model extensions
     }
   }
 

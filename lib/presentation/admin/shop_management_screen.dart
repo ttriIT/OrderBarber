@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/widgets/rating_bar.dart';
-import '../../providers/admin_provider.dart';
+import '../../providers/manager_provider.dart';
 
 class ShopManagementScreen extends StatefulWidget {
   const ShopManagementScreen({super.key});
@@ -15,7 +15,7 @@ class _ShopManagementScreenState extends State<ShopManagementScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<AdminProvider>().loadShops();
+    context.read<ManagerProvider>().loadManagedShops();
   }
 
   @override
@@ -24,13 +24,13 @@ class _ShopManagementScreenState extends State<ShopManagementScreen> {
       appBar: AppBar(
         title: const Text('Quản lý tiệm'),
       ),
-      body: Consumer<AdminProvider>(
+      body: Consumer<ManagerProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final shops = provider.shops;
+          final shops = provider.managedShops;
           if (shops.isEmpty) {
             return Center(
               child: Text(

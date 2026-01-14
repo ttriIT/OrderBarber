@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../data/models/shop_model.dart';
 import '../data/models/service_model.dart';
 import '../data/models/barber_model.dart';
-import '../data/services/fake_shop_service.dart';
+import '../data/services/shop_service.dart';
 
 /// ShopProvider for managing shop, service, and barber data
 class ShopProvider extends ChangeNotifier {
-  final FakeShopService _shopService = FakeShopService();
+  final ShopService _shopService = ShopService();
 
   List<ShopModel> _shops = [];
   List<ServiceModel> _services = [];

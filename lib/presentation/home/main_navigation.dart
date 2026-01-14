@@ -16,6 +16,7 @@ import '../admin/user_management_screen.dart';
 import '../admin/shop_management_screen.dart';
 import '../admin/statistics_screen.dart';
 import '../admin/promotion_management_screen.dart';
+import '../manager/manager_dashboard_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -55,6 +56,8 @@ class _MainNavigationState extends State<MainNavigation> {
         return _buildBarberBody();
       case UserRole.admin:
         return _buildAdminBody();
+      case UserRole.manager:
+        return _buildManagerBody();
       default:
         return _buildCustomerBody();
     }
@@ -86,9 +89,19 @@ class _MainNavigationState extends State<MainNavigation> {
     final screens = [
       const AdminHomeScreen(),
       const UserManagementScreen(),
-      const ShopManagementScreen(),
       const PromotionManagementScreen(),
       const StatisticsScreen(),
+      const ProfileScreen(),
+    ];
+    return screens[_currentIndex];
+  }
+
+  Widget _buildManagerBody() {
+    final screens = [
+      const ManagerDashboardScreen(),
+      const ShopManagementScreen(),
+      const OrderListScreen(),
+      const ChatListScreen(),
       const ProfileScreen(),
     ];
     return screens[_currentIndex];
@@ -102,6 +115,8 @@ class _MainNavigationState extends State<MainNavigation> {
         return _buildBarberNav();
       case UserRole.admin:
         return _buildAdminNav();
+      case UserRole.manager:
+        return _buildManagerNav();
       default:
         return _buildCustomerNav();
     }
@@ -194,11 +209,6 @@ class _MainNavigationState extends State<MainNavigation> {
           label: 'Users',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.store_outlined),
-          activeIcon: Icon(Icons.store),
-          label: 'Shops',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.discount_outlined),
           activeIcon: Icon(Icons.discount),
           label: 'Khuyến mãi',
@@ -209,9 +219,44 @@ class _MainNavigationState extends State<MainNavigation> {
           label: 'Thống kê',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings_outlined),
-          activeIcon: Icon(Icons.settings),
-          label: 'Cài đặt',
+          icon: Icon(Icons.person_outlined),
+          activeIcon: Icon(Icons.person),
+          label: 'Tài khoản',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildManagerNav() {
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      onTap: (index) => setState(() => _currentIndex = index),
+      type: BottomNavigationBarType.fixed,
+      items: [
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.dashboard_outlined),
+          activeIcon: Icon(Icons.dashboard),
+          label: 'M.Dashboard',
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.store_outlined),
+          activeIcon: Icon(Icons.store),
+          label: 'Shops',
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_today_outlined),
+          activeIcon: Icon(Icons.calendar_today),
+          label: 'Bookings',
+        ),
+        BottomNavigationBarItem(
+          icon: _buildChatIcon(),
+          activeIcon: _buildChatIcon(isActive: true),
+          label: 'Chat',
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.person_outlined),
+          activeIcon: Icon(Icons.person),
+          label: 'Tài khoản',
         ),
       ],
     );

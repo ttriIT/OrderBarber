@@ -4,7 +4,6 @@ import '../../core/theme/app_colors.dart';
 import '../../core/routes/app_routes.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/notification_provider.dart';
-import '../../data/mock/mock_barbers.dart';
 import '../../data/models/barber_model.dart';
 import '../../data/models/user_model.dart';
 import '../../core/constants/app_constants.dart';
@@ -19,23 +18,20 @@ class ProfileScreen extends StatelessWidget {
         final user = authProvider.currentUser;
         final role = user?.role ?? UserRole.customer;
         
-        // Find barber details if applicable
+        // Initialize barber details if role is barber
         BarberModel? barberDetails;
         if (role == UserRole.barber && user != null) {
-          barberDetails = MockBarbers.barbers.firstWhere(
-            (b) => b.phone == user.phone || b.id == user.id,
-            orElse: () => BarberModel(
-              id: user.id,
-              name: user.name,
-              phone: user.phone,
-              avatarUrl: user.avatarUrl,
-              shopId: 'shop_1',
-              specialization: 'Stylist',
-              rating: 5.0,
-              reviewCount: 0,
-              skills: ['Cắt tóc nam', 'Tạo kiểu'],
-              yearsOfExperience: 5,
-            ),
+          barberDetails = BarberModel(
+            id: user.id,
+            name: user.name,
+            phone: user.phone,
+            avatarUrl: user.avatarUrl,
+            shopId: '', // Should be fetched from API
+            specialization: 'Stylist',
+            rating: 5.0,
+            reviewCount: 0,
+            skills: ['Cắt tóc nam', 'Tạo kiểu'],
+            yearsOfExperience: 5,
           );
         }
 
@@ -178,6 +174,21 @@ class ProfileScreen extends StatelessWidget {
             icon: Icons.analytics_outlined,
             title: 'Thống kê chi tiết',
             onTap: () => Navigator.pushNamed(context, AppRoutes.statistics),
+          ),
+        ];
+      case UserRole.manager:
+        return [
+          _buildMenuItem(
+            context,
+            icon: Icons.dashboard_outlined,
+            title: 'Dashboard Quản lý',
+            onTap: () => Navigator.pushNamed(context, AppRoutes.managerDashboard),
+          ),
+          _buildMenuItem(
+            context,
+            icon: Icons.store_outlined,
+            title: 'Cửa hàng của tôi',
+            onTap: () => Navigator.pushNamed(context, AppRoutes.shopManagement),
           ),
         ];
     }

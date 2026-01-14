@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../data/models/booking_model.dart';
-import '../data/services/fake_booking_service.dart';
+import '../data/services/booking_service.dart';
 import '../core/constants/app_constants.dart';
 
 class BarberIncomeProvider extends ChangeNotifier {
-  final FakeBookingService _bookingService = FakeBookingService();
+  final BookingService _bookingService = BookingService();
   
   List<BookingModel> _allBookings = [];
   bool _isLoading = false;

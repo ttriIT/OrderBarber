@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../data/models/user_model.dart';
-import '../data/services/fake_auth_service.dart';
+import '../data/services/auth_service.dart';
 import '../core/constants/app_constants.dart';
 
 /// AuthProvider for managing authentication state
 class AuthProvider extends ChangeNotifier {
-  final FakeAuthService _authService = FakeAuthService();
+  final AuthService _authService = AuthService();
 
   UserModel? _currentUser;
   bool _isLoading = false;
@@ -22,17 +22,17 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> login({
     required String phone,
     required String password,
-    required UserRole role,
+    required UserRole role, // Keeping this parameter for UI compatibility, even if not used by API
   }) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
+      // Map phone to username for API
       final user = await _authService.login(
-        phone: phone,
+        username: phone,
         password: password,
-        role: role,
       );
 
       if (user != null) {
@@ -66,8 +66,9 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
+      // Map name to fullName for API
       final user = await _authService.register(
-        name: name,
+        fullName: name,
         email: email,
         phone: phone,
         password: password,

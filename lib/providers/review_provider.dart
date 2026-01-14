@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../data/models/review_model.dart';
-import '../data/services/fake_review_service.dart';
+import '../data/services/review_service.dart';
 
 /// ReviewProvider for managing reviews and ratings
 class ReviewProvider extends ChangeNotifier {
-  final FakeReviewService _reviewService = FakeReviewService();
+  final ReviewService _reviewService = ReviewService();
 
   List<ReviewModel> _reviews = [];
   double _averageRating = 0;

@@ -36,7 +36,13 @@ class _LoginScreenState extends State<LoginScreen> {
           );
 
       if (success && mounted) {
-        Navigator.pushReplacementNamed(context, AppRoutes.main);
+        if (_selectedRole == UserRole.admin) {
+          Navigator.pushReplacementNamed(context, AppRoutes.adminDashboard);
+        } else if (_selectedRole == UserRole.manager) {
+          Navigator.pushReplacementNamed(context, AppRoutes.managerDashboard);
+        } else {
+          Navigator.pushReplacementNamed(context, AppRoutes.main);
+        }
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -85,7 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     Expanded(
                       child: _buildRoleTab(UserRole.barber, 'Barber'),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _buildRoleTab(UserRole.manager, 'Manager'),
+                    ),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: _buildRoleTab(UserRole.admin, 'Admin'),
                     ),

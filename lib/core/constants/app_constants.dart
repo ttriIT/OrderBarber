@@ -6,8 +6,8 @@ class AppConstants {
   static const String appName = 'BarberShop';
   static const String appVersion = '1.0.0';
 
-  // TODO: Replace with actual API base URL when backend is ready
-  static const String apiBaseUrl = 'https://api.barbershop.com/v1';
+  // API Base URL
+  static const String apiBaseUrl = 'https://conducive-reanna-manliest.ngrok-free.dev/api';
 
   // Pagination
   static const int defaultPageSize = 20;
@@ -46,6 +46,7 @@ class AppConstants {
 enum UserRole {
   customer,
   barber,
+  manager,
   admin,
 }
 
