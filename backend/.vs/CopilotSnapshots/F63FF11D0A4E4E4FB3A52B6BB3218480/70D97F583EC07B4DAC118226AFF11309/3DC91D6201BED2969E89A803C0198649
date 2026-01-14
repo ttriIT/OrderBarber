@@ -1,0 +1,219 @@
+﻿using Microsoft.EntityFrameworkCore;
+using appcattoc.Data;
+using appcattoc.DTOs.Chat;
+using appcattoc.Models.Entities;
+using Mscc.GenerativeAI;
+
+namespace appcattoc.Services;
+
+public interface IChatService
+{
+    Task<ServiceResult<ChatSessionResponse>> CreateChatSessionAsync(int userId, CreateChatSessionRequest request);
+    Task<ServiceResult<ChatMessageResponse>> SendMessageAsync(int userId, SendMessageRequest request);
+    Task<List<ChatSessionResponse>> GetUserChatSessionsAsync(int userId);
+    Task<List<ChatMessageResponse>> GetSessionMessagesAsync(int sessionId, int userId);
+}
+
+public class ChatService : IChatService
+{
+    private readonly BarberDbContext _context;
+    private readonly IConfiguration _configuration;
+    private readonly string _geminiApiKey;
+
+    public ChatService(BarberDbContext context, IConfiguration configuration)
+    {
+        _context = context;
+        _configuration = configuration;
+        _geminiApiKey = _configuration["Gemini:ApiKey"] ?? throw new Exception("Gemini API Key not found");
+    }
+
+    public async Task<ServiceResult<ChatSessionResponse>> CreateChatSessionAsync(int userId, CreateChatSessionRequest request)
+    {
+        try
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return ServiceResult<ChatSessionResponse>.Failure("User not found");
+            }
+
+            var session = new ChatSession
+            {
+                UserId = userId,
+                SessionType = request.SessionType,
+                Title = request.Title ?? "New Chat",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.ChatSessions.Add(session);
+            await _context.SaveChangesAsync();
+
+            var response = new ChatSessionResponse
+            {
+                SessionId = session.SessionId,
+                UserId = session.UserId,
+                SessionType = session.SessionType,
+                Title = session.Title,
+                CreatedAt = session.CreatedAt,
+                UpdatedAt = session.UpdatedAt,
+                Messages = new List<ChatMessageResponse>()
+            };
+
+            return ServiceResult<ChatSessionResponse>.SuccessResult(response);
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<ChatSessionResponse>.Failure($"Error creating chat session: {ex.Message}");
+        }
+    }
+
+    public async Task<ServiceResult<ChatMessageResponse>> SendMessageAsync(int userId, SendMessageRequest request)
+    {
+        try
+        {
+            var session = await _context.ChatSessions
+                .Include(s => s.Messages)
+                .FirstOrDefaultAsync(s => s.SessionId == request.SessionId && s.UserId == userId);
+
+            if (session == null)
+            {
+                return ServiceResult<ChatMessageResponse>.Failure("Chat session not found or access denied");
+            }
+
+            var userMessage = new ChatMessage
+            {
+                SessionId = request.SessionId,
+                SenderId = userId,
+                Content = request.Content,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.ChatMessages.Add(userMessage);
+            await _context.SaveChangesAsync();
+
+            var aiResponse = await GetGeminiResponseAsync(request.Content, session.Messages.ToList());
+
+            var aiMessage = new ChatMessage
+            {
+                SessionId = request.SessionId,
+                SenderId = null,
+                Content = aiResponse,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.ChatMessages.Add(aiMessage);
+            session.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            var response = new ChatMessageResponse
+            {
+                MessageId = aiMessage.MessageId,
+                SessionId = aiMessage.SessionId,
+                SenderId = aiMessage.SenderId,
+                SenderName = "AI Assistant",
+                Content = aiMessage.Content,
+                CreatedAt = aiMessage.CreatedAt
+            };
+
+            return ServiceResult<ChatMessageResponse>.SuccessResult(response);
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<ChatMessageResponse>.Failure($"Error sending message: {ex.Message}");
+        }
+    }
+
+    public async Task<List<ChatSessionResponse>> GetUserChatSessionsAsync(int userId)
+    {
+        var sessions = await _context.ChatSessions
+            .Include(s => s.Messages.OrderByDescending(m => m.CreatedAt).Take(1))
+            .Where(s => s.UserId == userId)
+            .OrderByDescending(s => s.UpdatedAt)
+            .ToListAsync();
+
+        return sessions.Select(s => new ChatSessionResponse
+        {
+            SessionId = s.SessionId,
+            UserId = s.UserId,
+            SessionType = s.SessionType,
+            Title = s.Title,
+            CreatedAt = s.CreatedAt,
+            UpdatedAt = s.UpdatedAt,
+            LastMessage = s.Messages.FirstOrDefault()?.Content,
+            Messages = new List<ChatMessageResponse>()
+        }).ToList();
+    }
+
+    public async Task<List<ChatMessageResponse>> GetSessionMessagesAsync(int sessionId, int userId)
+    {
+        var sessionExists = await _context.ChatSessions
+            .AnyAsync(s => s.SessionId == sessionId && s.UserId == userId);
+
+        if (!sessionExists)
+        {
+            return new List<ChatMessageResponse>();
+        }
+
+        var messages = await _context.ChatMessages
+            .Include(m => m.Sender)
+            .Where(m => m.SessionId == sessionId)
+            .OrderBy(m => m.CreatedAt)
+            .ToListAsync();
+
+        return messages.Select(m => new ChatMessageResponse
+        {
+            MessageId = m.MessageId,
+            SessionId = m.SessionId,
+            SenderId = m.SenderId,
+            SenderName = m.SenderId == null ? "AI Assistant" : m.Sender?.FullName ?? "User",
+            Content = m.Content,
+            CreatedAt = m.CreatedAt
+        }).ToList();
+    }
+
+    private async Task<string> GetGeminiResponseAsync(string userMessage, List<ChatMessage> conversationHistory)
+    {
+        try
+        {
+            var model = new GenerativeModel(apiKey: _geminiApiKey, model: "gemini-2.0-flash-exp");
+            var systemInstruction = "Ban la tro ly AI cho he thong dat lich cat toc Smart Barber Booking. Tu van dich vu cat toc, huong dan dat lich, giai dap thac mac. Tra loi bang tieng Viet, than thien va chuyen nghiep.";
+            var conversationContext = new List<Content>();
+            foreach (var msg in conversationHistory.TakeLast(10))
+            {
+                var role = msg.SenderId == null ? "model" : "user";
+                conversationContext.Add(new Content
+                {
+                    Role = role,
+                    Parts = new[] { new Part { Text = msg.Content } }
+                });
+            }
+            var chat = model.StartChat(new StartChatParams
+            {
+                History = conversationContext,
+                SystemInstruction = new Content { Parts = new[] { new Part { Text = systemInstruction } } }
+            });
+            var response = await chat.SendMessageAsync(userMessage);
+            return response?.Text ?? "Xin loi, toi khong the tra loi luc nay.";
+        }
+        catch (Exception ex)
+        {
+            return $"Xin loi, he thong AI dang gap su co. (Loi: {ex.Message})";
+        }
+    }
+}
+
+public class ServiceResult<T>
+{
+    public bool Success { get; set; }
+    public string Message { get; set; } = string.Empty;
+    public T? Data { get; set; }
+    public static ServiceResult<T> SuccessResult(T data)
+    {
+        return new ServiceResult<T> { Success = true, Data = data, Message = "Success" };
+    }
+    public static ServiceResult<T> Failure(string message)
+    {
+        return new ServiceResult<T> { Success = false, Message = message };
+    }
+}

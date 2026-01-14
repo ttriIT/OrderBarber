@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\appcattoc",
+    "\\appcattoc\\Data",
+    "\\appcattoc\\DTOs",
+    "\\appcattoc\\DTOs\\Auth",
+    "\\appcattoc\\Migrations",
+    "\\appcattoc\\Models",
+    "\\appcattoc\\Models\\Entities",
+    "\\appcattoc\\Models\\Enums",
+    "\\Database"
+  ],
+  "SelectedNode": "\\OrderBarberBackend.sln",
+  "PreviewInSolutionExplorer": false
+}

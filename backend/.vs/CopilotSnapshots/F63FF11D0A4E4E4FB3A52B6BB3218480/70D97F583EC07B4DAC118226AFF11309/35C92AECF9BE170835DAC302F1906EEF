@@ -1,0 +1,44 @@
+﻿using System.ComponentModel.DataAnnotations;
+using appcattoc.Models.Enums;
+
+namespace appcattoc.DTOs.Chat;
+
+public class CreateChatSessionRequest
+{
+    public ChatSessionType Type { get; set; } = ChatSessionType.Human_to_AI;
+    public int? User2_Id { get; set; }
+    public string? Title { get; set; }
+}
+
+public class SendMessageRequest
+{
+    public int SessionId { get; set; }
+    public string Content { get; set; } = string.Empty;
+    public bool IsImage { get; set; }
+}
+
+public class ChatMessageResponse
+{
+    public int Id { get; set; }
+    public int SessionId { get; set; }
+    public int? SenderId { get; set; } // null = AI bot
+    public string SenderName { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+    public bool IsImage { get; set; }
+    public bool IsAI { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class ChatSessionResponse
+{
+    public int Id { get; set; }
+    public int User1_Id { get; set; }
+    public int? User2_Id { get; set; }
+    public string Type { get; set; } = string.Empty;
+    public string PartnerName { get; set; } = string.Empty;
+    public string PartnerAvatar { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public List<ChatMessageResponse> RecentMessages { get; set; } = new();
+}
+

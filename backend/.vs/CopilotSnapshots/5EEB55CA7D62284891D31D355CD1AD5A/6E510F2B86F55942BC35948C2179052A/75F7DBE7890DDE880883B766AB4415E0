@@ -1,0 +1,20 @@
+﻿{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=ManHenry;Port=5432;Database=BarberBookingDB;Username=postgres;Password=1;Pooling=true;MinPoolSize=1;MaxPoolSize=20;ConnectionLifetime=15;CommandTimeout=30;Timeout=15;"
+  },
+  "Jwt": {
+    "Key": "YourSecretKeyHere_MinimumLength32Characters!_ChangeThisInProduction",
+    "Issuer": "BarberBookingSystem",
+    "Audience": "BarberBookingSystem"
+  },
+  "OpenAI": {
+    "ApiKey": "your-openai-api-key-here"
+  }
+}

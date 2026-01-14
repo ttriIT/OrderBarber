@@ -1,0 +1,91 @@
+﻿using Microsoft.EntityFrameworkCore;
+using appcattoc.Data;
+using appcattoc.DTOs.Staff;
+using appcattoc.Models.Enums;
+
+namespace appcattoc.Services;
+
+public interface IStaffService
+{
+    Task<StaffScheduleResponse> GetStaffScheduleAsync(int staffId, DateTime date);
+}
+
+public class StaffService : IStaffService
+{
+    private readonly BarberDbContext _context;
+
+    public StaffService(BarberDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<StaffScheduleResponse> GetStaffScheduleAsync(int staffId, DateTime date)
+    {
+        var staff = await _context.StaffProfiles
+            .Include(s => s.Shop)
+            .FirstOrDefaultAsync(s => s.Id == staffId);
+
+        if (staff == null)
+        {
+            return new StaffScheduleResponse { Date = date, Slots = new List<ScheduleSlot>() };
+        }
+
+        var startOfDay = date.Date;
+        var endOfDay = date.Date.AddDays(1);
+
+        var appointments = await _context.Appointments
+            .Where(a => a.StaffId == staffId &&
+                       a.StartTime >= startOfDay &&
+                       a.StartTime < endOfDay &&
+                       a.Status != AppointmentStatus.Cancelled &&
+                       a.Status != AppointmentStatus.NoShow)
+            .Include(a => a.Customer)
+            .Include(a => a.Service)
+            .OrderBy(a => a.StartTime)
+            .ToListAsync();
+
+        var slots = new List<ScheduleSlot>();
+        var currentTime = startOfDay.Add(staff.Shop.OpenTime);
+        var closeTime = startOfDay.Add(staff.Shop.CloseTime);
+
+        while (currentTime < closeTime)
+        {
+            var nextHour = currentTime.AddHours(1);
+            
+            var appointmentInSlot = appointments.FirstOrDefault(a =>
+                a.StartTime < nextHour && a.EndTime > currentTime);
+
+            if (appointmentInSlot != null)
+            {
+                slots.Add(new ScheduleSlot
+                {
+                    StartTime = appointmentInSlot.StartTime,
+                    EndTime = appointmentInSlot.EndTime,
+                    IsBooked = true,
+                    AppointmentId = appointmentInSlot.Id,
+                    CustomerName = appointmentInSlot.Customer.FullName,
+                    ServiceName = appointmentInSlot.Service.Name
+                });
+                
+                currentTime = appointmentInSlot.EndTime;
+            }
+            else
+            {
+                slots.Add(new ScheduleSlot
+                {
+                    StartTime = currentTime,
+                    EndTime = nextHour > closeTime ? closeTime : nextHour,
+                    IsBooked = false
+                });
+                
+                currentTime = nextHour;
+            }
+        }
+
+        return new StaffScheduleResponse
+        {
+            Date = date,
+            Slots = slots
+        };
+    }
+}
