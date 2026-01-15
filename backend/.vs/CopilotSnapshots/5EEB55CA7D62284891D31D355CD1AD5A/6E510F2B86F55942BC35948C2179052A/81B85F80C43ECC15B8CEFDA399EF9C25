@@ -1,0 +1,178 @@
+﻿using Microsoft.EntityFrameworkCore;
+using appcattoc.Data;
+using appcattoc.DTOs.Appointments;
+using appcattoc.Models.Entities;
+using appcattoc.Models.Enums;
+
+namespace appcattoc.Services;
+
+public interface IAppointmentService
+{
+    Task<(bool Success, string Message, AppointmentResponse? Data)> CreateAppointmentAsync(int customerId, CreateAppointmentRequest request);
+    Task<(bool Success, string Message, AppointmentResponse? Data)> CreateWalkInAppointmentAsync(int staffId, CreateWalkInRequest request);
+    Task<List<AppointmentResponse>> GetCustomerAppointmentsAsync(int customerId);
+    Task<bool> UpdateAppointmentStatusAsync(int appointmentId, AppointmentStatus status);
+}
+
+public class AppointmentService : IAppointmentService
+{
+    private readonly BarberDbContext _context;
+
+    public AppointmentService(BarberDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<(bool Success, string Message, AppointmentResponse? Data)> CreateAppointmentAsync(
+        int customerId, CreateAppointmentRequest request)
+    {
+        var service = await _context.Services.FindAsync(request.ServiceId);
+        if (service == null)
+        {
+            return (false, "Service not found", null);
+        }
+
+        var staff = await _context.StaffProfiles.FindAsync(request.StaffId);
+        if (staff == null || !staff.IsActive)
+        {
+            return (false, "Staff not available", null);
+        }
+
+        var requestedEndTime = request.RequestedTime.AddMinutes(service.DurationMinutes);
+
+        var hasOverlap = await _context.Appointments
+            .Where(a => a.StaffId == request.StaffId &&
+                       a.Status != AppointmentStatus.Cancelled &&
+                       a.Status != AppointmentStatus.NoShow &&
+                       ((a.StartTime < requestedEndTime && a.EndTime > request.RequestedTime)))
+            .AnyAsync();
+
+        if (hasOverlap)
+        {
+            return (false, "Staff is busy during this time slot", null);
+        }
+
+        var appointment = new Appointment
+        {
+            CustomerId = customerId,
+            StaffId = request.StaffId,
+            ServiceId = request.ServiceId,
+            StartTime = request.RequestedTime,
+            EndTime = requestedEndTime,
+            Status = AppointmentStatus.Pending,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.Appointments.Add(appointment);
+        await _context.SaveChangesAsync();
+
+        var response = await GetAppointmentResponseAsync(appointment.Id);
+        return (true, "Appointment created successfully", response);
+    }
+
+    public async Task<(bool Success, string Message, AppointmentResponse? Data)> CreateWalkInAppointmentAsync(
+        int staffId, CreateWalkInRequest request)
+    {
+        var service = await _context.Services.FindAsync(request.ServiceId);
+        if (service == null)
+        {
+            return (false, "Service not found", null);
+        }
+
+        var endTime = request.StartTime.AddMinutes(service.DurationMinutes);
+
+        var hasOverlap = await _context.Appointments
+            .Where(a => a.StaffId == request.StaffId &&
+                       a.Status != AppointmentStatus.Cancelled &&
+                       a.Status != AppointmentStatus.NoShow &&
+                       ((a.StartTime < endTime && a.EndTime > request.StartTime)))
+            .AnyAsync();
+
+        if (hasOverlap)
+        {
+            return (false, "Time slot is already booked", null);
+        }
+
+        var appointment = new Appointment
+        {
+            CustomerId = request.CustomerId,
+            StaffId = request.StaffId,
+            ServiceId = request.ServiceId,
+            StartTime = request.StartTime,
+            EndTime = endTime,
+            Status = AppointmentStatus.Confirmed,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.Appointments.Add(appointment);
+        await _context.SaveChangesAsync();
+
+        var response = await GetAppointmentResponseAsync(appointment.Id);
+        return (true, "Walk-in appointment created successfully", response);
+    }
+
+    public async Task<List<AppointmentResponse>> GetCustomerAppointmentsAsync(int customerId)
+    {
+        return await _context.Appointments
+            .Where(a => a.CustomerId == customerId)
+            .Include(a => a.Customer)
+            .Include(a => a.Staff).ThenInclude(s => s.User)
+            .Include(a => a.Service)
+            .OrderByDescending(a => a.StartTime)
+            .Select(a => new AppointmentResponse
+            {
+                Id = a.Id,
+                CustomerId = a.CustomerId,
+                CustomerName = a.Customer.FullName,
+                StaffId = a.StaffId,
+                StaffName = a.Staff.User.FullName,
+                ServiceId = a.ServiceId,
+                ServiceName = a.Service.Name,
+                ServicePrice = a.Service.Price,
+                StartTime = a.StartTime,
+                EndTime = a.EndTime,
+                Status = a.Status.ToString(),
+                CreatedAt = a.CreatedAt
+            })
+            .ToListAsync();
+    }
+
+    public async Task<bool> UpdateAppointmentStatusAsync(int appointmentId, AppointmentStatus status)
+    {
+        var appointment = await _context.Appointments.FindAsync(appointmentId);
+        if (appointment == null)
+        {
+            return false;
+        }
+
+        appointment.Status = status;
+        appointment.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    private async Task<AppointmentResponse?> GetAppointmentResponseAsync(int appointmentId)
+    {
+        return await _context.Appointments
+            .Where(a => a.Id == appointmentId)
+            .Include(a => a.Customer)
+            .Include(a => a.Staff).ThenInclude(s => s.User)
+            .Include(a => a.Service)
+            .Select(a => new AppointmentResponse
+            {
+                Id = a.Id,
+                CustomerId = a.CustomerId,
+                CustomerName = a.Customer.FullName,
+                StaffId = a.StaffId,
+                StaffName = a.Staff.User.FullName,
+                ServiceId = a.ServiceId,
+                ServiceName = a.Service.Name,
+                ServicePrice = a.Service.Price,
+                StartTime = a.StartTime,
+                EndTime = a.EndTime,
+                Status = a.Status.ToString(),
+                CreatedAt = a.CreatedAt
+            })
+            .FirstOrDefaultAsync();
+    }
+}

@@ -1,0 +1,187 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using appcattoc.Data;
+using appcattoc.Services;
+using appcattoc.Hubs;
+using appcattoc.Middleware;
+using appcattoc.Validators;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// =======================
+// DATABASE
+// =======================
+builder.Services.AddDbContext<BarberDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// =======================
+// JWT AUTH
+// =======================
+var jwtKey = builder.Configuration["Jwt:Key"]
+    ?? "YourSecretKeyHere_MinimumLength32Characters!";
+var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BarberBookingSystem";
+var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BarberBookingSystem";
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtKey))
+    };
+
+    // JWT cho SignalR
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/hubs"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+
+builder.Services.AddAuthorization();
+
+// =======================
+// FLUENTVALIDATION
+// =======================
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateBookingRequestValidator>();
+
+// =======================
+// SERVICES
+// =======================
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IStaffService, StaffService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IChatService, ChatService>(); // ✅ Enabled - AI Chat feature
+
+// =======================
+// CONTROLLERS & SIGNALR
+// =======================
+builder.Services.AddControllers();
+builder.Services.AddSignalR();
+
+// =======================
+// CORS (MOBILE DEV) - FIX CHO SIGNALR
+// =======================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy
+            .SetIsOriginAllowed(_ => true) // Cho phép mọi origin khi dev
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials(); // Bắt buộc cho SignalR
+    });
+});
+
+// =======================
+// SWAGGER + JWT
+// =======================
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Smart Barber Booking System API",
+        Version = "v1"
+    });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Bearer {your JWT token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+var app = builder.Build();
+
+// =======================
+// MIDDLEWARE
+// =======================
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// HTTPS Redirection - Only in Production
+if (app.Environment.IsProduction() && 
+    app.Configuration.GetValue<bool>("Https:EnableInProduction", true))
+{
+    app.UseHttpsRedirection();
+}
+
+app.UseCors("AllowAll");
+
+// ✅ Rate Limiting cho Auth endpoints (login, register)
+app.UseRateLimiting(maxRequests: 5, timeWindowSeconds: 60);
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+app.MapHub<ChatHub>("/hubs/chat");
+
+// =======================
+// DB SEEDING
+// =======================
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<BarberDbContext>();
+        await DbSeeder.SeedAsync(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
+
+app.Run();

@@ -1,0 +1,20 @@
+﻿{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=ManHenry;Database=barber_booking;Username=postgres;Password=yourpassword"
+  },
+  "Jwt": {
+    "Key": "YourSecretKeyHere_MinimumLength32Characters!_ChangeThisInProduction",
+    "Issuer": "BarberBookingSystem",
+    "Audience": "BarberBookingSystem"
+  },
+  "OpenAI": {
+    "ApiKey": "your-openai-api-key-here"
+  }
+}

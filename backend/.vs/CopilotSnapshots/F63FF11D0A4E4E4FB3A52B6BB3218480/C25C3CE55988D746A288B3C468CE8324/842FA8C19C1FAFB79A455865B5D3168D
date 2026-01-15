@@ -1,0 +1,54 @@
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+namespace appcattoc.Hubs;
+
+[Authorize]
+public class ChatHub : Hub
+{
+    public async Task SendMessage(int sessionId, string message)
+    {
+        var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userName = Context.User?.FindFirst("FullName")?.Value ?? "User";
+
+        await Clients.Group($"session_{sessionId}").SendAsync("ReceiveMessage", new
+        {
+            SessionId = sessionId,
+            SenderId = userId,
+            SenderName = userName,
+            Content = message,
+            CreatedAt = DateTime.UtcNow
+        });
+    }
+
+    public async Task JoinSession(int sessionId)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, $"session_{sessionId}");
+    }
+
+    public async Task LeaveSession(int sessionId)
+    {
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"session_{sessionId}");
+    }
+
+    public override async Task OnConnectedAsync()
+    {
+        var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!string.IsNullOrEmpty(userId))
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, $"user_{userId}");
+        }
+        await base.OnConnectedAsync();
+    }
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!string.IsNullOrEmpty(userId))
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"user_{userId}");
+        }
+        await base.OnDisconnectedAsync(exception);
+    }
+}

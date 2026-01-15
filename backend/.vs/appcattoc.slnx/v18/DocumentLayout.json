@@ -1,0 +1,474 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\appcattoc\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\data\\barberdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\data\\barberdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\models\\entities\\staffprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\models\\entities\\staffprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\models\\entities\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\models\\entities\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\models\\entities\\service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\models\\entities\\service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\test-sqlserver.bat||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Scripts\\test-sqlserver.bat||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\SQL_SERVER_MIGRATION_COMPLETED.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SQL_SERVER_MIGRATION_COMPLETED.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\appcattoc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\appcattoc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\BACKEND_ERRORS_FIXED.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BACKEND_ERRORS_FIXED.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\models\\entities\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\models\\entities\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\models\\entities\\chatsession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\models\\entities\\chatsession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\models\\enums\\chatsessiontype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\models\\enums\\chatsessiontype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\models\\enums\\appointmentstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\models\\enums\\appointmentstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_COMPLETED.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CONNECTION_STRING_COMPLETED.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_GUIDE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CONNECTION_STRING_GUIDE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\TestConnection.ps1||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Scripts\\TestConnection.ps1||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\test-connection.bat||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Scripts\\test-connection.bat||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_FIX_SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CONNECTION_STRING_FIX_SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\services\\appointmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\services\\appointmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\services\\invoiceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\services\\invoiceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\services\\staffservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\services\\staffservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\services\\chatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\services\\chatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|c:\\users\\admin\\source\\repos\\appcattoc\\appcattoc\\controllers\\invoicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D47AE135-2035-FA1E-6343-7E6CB7DC9DCD}|appcattoc\\appcattoc.csproj|solutionrelative:appcattoc\\controllers\\invoicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\TestSqlConnection.ps1||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Scripts\\TestSqlConnection.ps1||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "StaffProfile.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\StaffProfile.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Models\\Entities\\StaffProfile.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\StaffProfile.cs",
+              "RelativeToolTip": "appcattoc\\Models\\Entities\\StaffProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:57:29.371Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "test-sqlserver.bat",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\test-sqlserver.bat",
+              "RelativeDocumentMoniker": "Scripts\\test-sqlserver.bat",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\test-sqlserver.bat",
+              "RelativeToolTip": "Scripts\\test-sqlserver.bat",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000614|",
+              "WhenOpened": "2026-01-09T05:54:53.39Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SQL_SERVER_MIGRATION_COMPLETED.md",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\SQL_SERVER_MIGRATION_COMPLETED.md",
+              "RelativeDocumentMoniker": "SQL_SERVER_MIGRATION_COMPLETED.md",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\SQL_SERVER_MIGRATION_COMPLETED.md",
+              "RelativeToolTip": "SQL_SERVER_MIGRATION_COMPLETED.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADQBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-01-09T05:54:27.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appcattoc",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\appcattoc.csproj",
+              "RelativeDocumentMoniker": "appcattoc\\appcattoc.csproj",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\appcattoc.csproj",
+              "RelativeToolTip": "appcattoc\\appcattoc.csproj",
+              "ViewState": "AgIAABcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-01-09T05:52:03.441Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BarberDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Data\\BarberDbContext.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Data\\BarberDbContext.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Data\\BarberDbContext.cs",
+              "RelativeToolTip": "appcattoc\\Data\\BarberDbContext.cs",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T03:04:09.431Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "TestSqlConnection.ps1",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\TestSqlConnection.ps1",
+              "RelativeDocumentMoniker": "Scripts\\TestSqlConnection.ps1",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\TestSqlConnection.ps1",
+              "RelativeToolTip": "Scripts\\TestSqlConnection.ps1",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-01-09T05:55:19.763Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Service.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\Service.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Models\\Entities\\Service.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\Service.cs",
+              "RelativeToolTip": "appcattoc\\Models\\Entities\\Service.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:57:20.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Invoice.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\Invoice.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Models\\Entities\\Invoice.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\Invoice.cs",
+              "RelativeToolTip": "appcattoc\\Models\\Entities\\Invoice.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:27:22.005Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BACKEND_ERRORS_FIXED.md",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\BACKEND_ERRORS_FIXED.md",
+              "RelativeDocumentMoniker": "BACKEND_ERRORS_FIXED.md",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\BACKEND_ERRORS_FIXED.md",
+              "RelativeToolTip": "BACKEND_ERRORS_FIXED.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-01-09T05:32:23.767Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "InvoiceService.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Services\\InvoiceService.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Services\\InvoiceService.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Services\\InvoiceService.cs",
+              "RelativeToolTip": "appcattoc\\Services\\InvoiceService.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAEBVwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:28:20.51Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\appsettings.json",
+              "RelativeDocumentMoniker": "appcattoc\\appsettings.json",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\appsettings.json",
+              "RelativeToolTip": "appcattoc\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAACVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-01-09T02:58:03.288Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "StaffService.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Services\\StaffService.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Services\\StaffService.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Services\\StaffService.cs",
+              "RelativeToolTip": "appcattoc\\Services\\StaffService.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAABRwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:28:36.224Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Program.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Program.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Program.cs",
+              "RelativeToolTip": "appcattoc\\Program.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:26:56.557Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ChatService.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Services\\ChatService.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Services\\ChatService.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Services\\ChatService.cs",
+              "RelativeToolTip": "appcattoc\\Services\\ChatService.cs",
+              "ViewState": "AgIAANMAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:28:49.769Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "InvoicesController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Controllers\\InvoicesController.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Controllers\\InvoicesController.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Controllers\\InvoicesController.cs",
+              "RelativeToolTip": "appcattoc\\Controllers\\InvoicesController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:30:12.511Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "AppointmentService.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Services\\AppointmentService.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Services\\AppointmentService.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Services\\AppointmentService.cs",
+              "RelativeToolTip": "appcattoc\\Services\\AppointmentService.cs",
+              "ViewState": "AgIAAL8AAAAAAAAAAEBVwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:28:01.718Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ChatMessage.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\ChatMessage.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Models\\Entities\\ChatMessage.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\ChatMessage.cs",
+              "RelativeToolTip": "appcattoc\\Models\\Entities\\ChatMessage.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:27:14.372Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ChatSession.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\ChatSession.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Models\\Entities\\ChatSession.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Entities\\ChatSession.cs",
+              "RelativeToolTip": "appcattoc\\Models\\Entities\\ChatSession.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T05:27:07.314Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ChatSessionType.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Enums\\ChatSessionType.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Models\\Enums\\ChatSessionType.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Enums\\ChatSessionType.cs",
+              "RelativeToolTip": "appcattoc\\Models\\Enums\\ChatSessionType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T03:04:05.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AppointmentStatus.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Enums\\AppointmentStatus.cs",
+              "RelativeDocumentMoniker": "appcattoc\\Models\\Enums\\AppointmentStatus.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\Models\\Enums\\AppointmentStatus.cs",
+              "RelativeToolTip": "appcattoc\\Models\\Enums\\AppointmentStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T03:04:02.96Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "test-connection.bat",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\test-connection.bat",
+              "RelativeDocumentMoniker": "Scripts\\test-connection.bat",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\test-connection.bat",
+              "RelativeToolTip": "Scripts\\test-connection.bat",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000614|",
+              "WhenOpened": "2026-01-09T02:58:03.528Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "TestConnection.ps1",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\TestConnection.ps1",
+              "RelativeDocumentMoniker": "Scripts\\TestConnection.ps1",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\Scripts\\TestConnection.ps1",
+              "RelativeToolTip": "Scripts\\TestConnection.ps1",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-01-09T02:58:03.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "CONNECTION_STRING_GUIDE.md",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_GUIDE.md",
+              "RelativeDocumentMoniker": "CONNECTION_STRING_GUIDE.md",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_GUIDE.md",
+              "RelativeToolTip": "CONNECTION_STRING_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-01-09T02:58:03.42Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "appcattoc\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\appcattoc\\appsettings.Development.json",
+              "RelativeToolTip": "appcattoc\\appsettings.Development.json",
+              "ViewState": "AgIAAAkAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-01-09T02:58:03.351Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CONNECTION_STRING_COMPLETED.md",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_COMPLETED.md",
+              "RelativeDocumentMoniker": "CONNECTION_STRING_COMPLETED.md",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_COMPLETED.md",
+              "RelativeToolTip": "CONNECTION_STRING_COMPLETED.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-01-09T02:55:46.952Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "CONNECTION_STRING_FIX_SUMMARY.md",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_FIX_SUMMARY.md",
+              "RelativeDocumentMoniker": "CONNECTION_STRING_FIX_SUMMARY.md",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\appcattoc\\CONNECTION_STRING_FIX_SUMMARY.md",
+              "RelativeToolTip": "CONNECTION_STRING_FIX_SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-01-09T02:58:03.574Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

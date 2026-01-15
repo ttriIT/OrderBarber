@@ -1,0 +1,34 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using appcattoc.Models.Enums;
+
+namespace appcattoc.Models.Entities;
+
+[Table("Invoices")]
+public class Invoice
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+    [Required]
+    [ForeignKey(nameof(Appointment))]
+    public int AppointmentId { get; set; }
+
+    [Required]
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal TotalAmount { get; set; }
+
+    [Required]
+    public PaymentMethod PaymentMethod { get; set; }
+
+    [Required]
+    [ForeignKey(nameof(CreatedByStaff))]
+    public int CreatedByStaffId { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    // Navigation Properties
+    public Appointment Appointment { get; set; } = null!;
+    public StaffProfile CreatedByStaff { get; set; } = null!;
+}

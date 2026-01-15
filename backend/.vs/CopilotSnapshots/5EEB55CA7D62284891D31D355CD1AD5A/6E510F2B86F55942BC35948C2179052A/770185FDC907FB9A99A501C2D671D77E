@@ -1,0 +1,50 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using appcattoc.DTOs.Invoices;
+using appcattoc.Services;
+using System.Security.Claims;
+
+namespace appcattoc.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize(Roles = "Staff,ShopManager")]
+public class InvoicesController : ControllerBase
+{
+    private readonly IInvoiceService _invoiceService;
+
+    public InvoicesController(IInvoiceService invoiceService)
+    {
+        _invoiceService = invoiceService;
+    }
+
+    /// <summary>
+    /// Create an invoice and mark appointment as completed
+    /// </summary>
+    [HttpPost("create")]
+    public async Task<ActionResult<InvoiceResponse>> CreateInvoice([FromBody] CreateInvoiceRequest request)
+    {
+        var staffId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var result = await _invoiceService.CreateInvoiceAsync(staffId, request);
+
+        if (!result.Success)
+        {
+            return BadRequest(new { message = result.Message });
+        }
+
+        return Ok(result.Data);
+    }
+
+    /// <summary>
+    /// Get all invoices for a shop
+    /// </summary>
+    [HttpGet("shop/{shopId}")]
+    public async Task<ActionResult<List<InvoiceResponse>>> GetShopInvoices(
+        int shopId,
+        [FromQuery] DateTime? startDate,
+        [FromQuery] DateTime? endDate)
+    {
+        var invoices = await _invoiceService.GetInvoicesByShopAsync(shopId, startDate, endDate);
+        return Ok(invoices);
+    }
+}

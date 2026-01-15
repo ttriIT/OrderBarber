@@ -1,0 +1,195 @@
+﻿using Microsoft.EntityFrameworkCore;
+using appcattoc.Data;
+using appcattoc.DTOs.Chat;
+using appcattoc.Models.Entities;
+using appcattoc.Models.Enums;
+using OpenAI.Chat;
+using ChatMessageEntity = appcattoc.Models.Entities.ChatMessage;
+
+namespace appcattoc.Services;
+
+public interface IChatService
+{
+    Task<(bool Success, string Message, ChatSessionResponse? Data)> CreateChatSessionAsync(int userId, CreateChatSessionRequest request);
+    Task<(bool Success, string Message, ChatMessageResponse? Data)> SendMessageAsync(int userId, SendMessageRequest request);
+    Task<List<ChatSessionResponse>> GetUserChatSessionsAsync(int userId);
+    Task<List<ChatMessageResponse>> GetSessionMessagesAsync(int sessionId, int userId);
+}
+
+public class ChatService : IChatService
+{
+    private readonly BarberDbContext _context;
+    private readonly IConfiguration _configuration;
+
+    public ChatService(BarberDbContext context, IConfiguration configuration)
+    {
+        _context = context;
+        _configuration = configuration;
+    }
+
+    public async Task<(bool Success, string Message, ChatSessionResponse? Data)> CreateChatSessionAsync(
+        int userId, CreateChatSessionRequest request)
+    {
+        if (!Enum.TryParse<ChatSessionType>(request.Type, out var sessionType))
+        {
+            return (false, "Invalid chat session type", null);
+        }
+
+        var chatSession = new ChatSession
+        {
+            User1_Id = userId,
+            User2_Id = request.User2_Id,
+            Type = sessionType,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.ChatSessions.Add(chatSession);
+        await _context.SaveChangesAsync();
+
+        var response = new ChatSessionResponse
+        {
+            Id = chatSession.Id,
+            User1_Id = chatSession.User1_Id,
+            User2_Id = chatSession.User2_Id,
+            Type = chatSession.Type.ToString(),
+            CreatedAt = chatSession.CreatedAt,
+            RecentMessages = new List<ChatMessageResponse>()
+        };
+
+        return (true, "Chat session created successfully", response);
+    }
+
+    public async Task<(bool Success, string Message, ChatMessageResponse? Data)> SendMessageAsync(
+        int userId, SendMessageRequest request)
+    {
+        var session = await _context.ChatSessions
+            .FirstOrDefaultAsync(s => s.Id == request.SessionId);
+
+        if (session == null)
+        {
+            return (false, "Chat session not found", null);
+        }
+
+        var message = new ChatMessageEntity
+        {
+            SessionId = request.SessionId,
+            SenderId = userId,
+            Content = request.Content,
+            IsImage = request.IsImage,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.ChatMessages.Add(message);
+        await _context.SaveChangesAsync();
+
+        var sender = await _context.Users.FindAsync(userId);
+
+        var response = new ChatMessageResponse
+        {
+            Id = message.Id,
+            SessionId = message.SessionId,
+            SenderId = message.SenderId,
+            SenderName = sender?.FullName ?? "Unknown",
+            Content = message.Content,
+            IsImage = message.IsImage,
+            CreatedAt = message.CreatedAt
+        };
+
+        if (session.Type == ChatSessionType.Human_to_AI)
+        {
+            var aiResponse = await GetAIResponseAsync(request.Content);
+            
+            var aiMessage = new ChatMessageEntity
+            {
+                SessionId = request.SessionId,
+                SenderId = 0,
+                Content = aiResponse,
+                IsImage = false,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.ChatMessages.Add(aiMessage);
+            await _context.SaveChangesAsync();
+        }
+
+        return (true, "Message sent successfully", response);
+    }
+
+    public async Task<List<ChatSessionResponse>> GetUserChatSessionsAsync(int userId)
+    {
+        return await _context.ChatSessions
+            .Where(s => s.User1_Id == userId || s.User2_Id == userId)
+            .Include(s => s.Messages.OrderByDescending(m => m.CreatedAt).Take(1))
+            .OrderByDescending(s => s.UpdatedAt ?? s.CreatedAt)
+            .Select(s => new ChatSessionResponse
+            {
+                Id = s.Id,
+                User1_Id = s.User1_Id,
+                User2_Id = s.User2_Id,
+                Type = s.Type.ToString(),
+                CreatedAt = s.CreatedAt,
+                RecentMessages = s.Messages.Select(m => new ChatMessageResponse
+                {
+                    Id = m.Id,
+                    SessionId = m.SessionId,
+                    SenderId = m.SenderId,
+                    SenderName = "User",
+                    Content = m.Content,
+                    IsImage = m.IsImage,
+                    CreatedAt = m.CreatedAt
+                }).ToList()
+            })
+            .ToListAsync();
+    }
+
+    public async Task<List<ChatMessageResponse>> GetSessionMessagesAsync(int sessionId, int userId)
+    {
+        var session = await _context.ChatSessions.FindAsync(sessionId);
+        if (session == null || (session.User1_Id != userId && session.User2_Id != userId))
+        {
+            return new List<ChatMessageResponse>();
+        }
+
+        return await _context.ChatMessages
+            .Where(m => m.SessionId == sessionId)
+            .OrderBy(m => m.CreatedAt)
+            .Select(m => new ChatMessageResponse
+            {
+                Id = m.Id,
+                SessionId = m.SessionId,
+                SenderId = m.SenderId,
+                SenderName = m.SenderId == 0 ? "AI Stylist" : "User",
+                Content = m.Content,
+                IsImage = m.IsImage,
+                CreatedAt = m.CreatedAt
+            })
+            .ToListAsync();
+    }
+
+    private async Task<string> GetAIResponseAsync(string userMessage)
+    {
+        try
+        {
+            var apiKey = _configuration["OpenAI:ApiKey"];
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                return "AI service is not configured. Please contact the administrator.";
+            }
+
+            var client = new ChatClient("gpt-3.5-turbo", apiKey);
+
+            var chatMessages = new List<ChatMessage>
+            {
+                new SystemChatMessage("You are a professional hair stylist advisor. Suggest hairstyles based on face shape, hair type, and personal preferences. Provide practical advice on hair care and styling. Be friendly, professional, and concise."),
+                new UserChatMessage(userMessage)
+            };
+
+            var completion = await client.CompleteChatAsync(chatMessages);
+            return completion.Value.Content[0].Text;
+        }
+        catch (Exception ex)
+        {
+            return $"I'm having trouble connecting right now. Please try again later. (Error: {ex.Message})";
+        }
+    }
+}

@@ -1,0 +1,42 @@
+using System.ComponentModel.DataAnnotations;
+using appcattoc.Models.Enums;
+
+namespace appcattoc.DTOs.Chat;
+
+public class CreateChatSessionRequest
+{
+    public ChatSessionType SessionType { get; set; } = ChatSessionType.Human_to_AI;
+    public string? Title { get; set; }
+}
+
+public class SendMessageRequest
+{
+    [Required]
+    public int SessionId { get; set; }
+    [Required]
+    public string Content { get; set; } = string.Empty;
+}
+
+public class ChatMessageResponse
+{
+    public int MessageId { get; set; }
+    public int SessionId { get; set; }
+    public int? SenderId { get; set; }
+    public string SenderName { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+}
+
+public class ChatSessionResponse
+{
+    public int SessionId { get; set; }
+    public int UserId { get; set; }
+    public ChatSessionType SessionType { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public string? LastMessage { get; set; }
+    public List<ChatMessageResponse> Messages { get; set; } = new();
+}
+
+

@@ -1,0 +1,6 @@
+﻿@appcattoc_HostAddress = http://ManHenry:5160
+
+GET {{appcattoc_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

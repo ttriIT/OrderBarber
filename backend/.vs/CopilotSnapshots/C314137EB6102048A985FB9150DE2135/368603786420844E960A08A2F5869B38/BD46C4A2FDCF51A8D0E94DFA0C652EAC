@@ -1,0 +1,124 @@
+﻿@appcattoc_HostAddress = http://localhost:5000
+@token = 
+
+### ==================== AUTH TESTS ====================
+
+### 1. ĐĂNG KÝ CUSTOMER
+POST {{appcattoc_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "customer_test",
+  "password": "123456",
+  "fullName": "Nguyen Van Test",
+  "phone": "0123456789",
+  "email": "customer@test.com",
+  "role": "customer"
+}
+
+###
+
+### 2. ĐĂNG KÝ BARBER
+POST {{appcattoc_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "barber_test",
+  "password": "123456",
+  "fullName": "Tran Van Barber",
+  "phone": "0987654321",
+  "email": "barber@test.com",
+  "role": "barber"
+}
+
+###
+
+### 3. ĐĂNG KÝ ADMIN
+POST {{appcattoc_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin_test",
+  "password": "123456",
+  "fullName": "Admin System",
+  "phone": "0111222333",
+  "email": "admin@test.com",
+  "role": "admin"
+}
+
+###
+
+### 4. ĐĂNG NHẬP (Customer)
+POST {{appcattoc_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "customer_test",
+  "password": "123456"
+}
+
+###
+
+### 5. ĐĂNG NHẬP (Barber)
+POST {{appcattoc_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "barber_test",
+  "password": "123456"
+}
+
+###
+
+### 6. ĐĂNG NHẬP (Admin)
+POST {{appcattoc_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin_test",
+  "password": "123456"
+}
+
+###
+
+### 7. ĐĂNG NHẬP SAI PASSWORD
+POST {{appcattoc_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "customer_test",
+  "password": "wrongpassword"
+}
+
+###
+
+### 8. LẤY THÔNG TIN USER HIỆN TẠI (Cần token)
+# Sau khi login, copy token vào @token ở trên
+GET {{appcattoc_HostAddress}}/api/auth/me
+Authorization: Bearer {{token}}
+
+###
+
+### 9. REFRESH TOKEN
+POST {{appcattoc_HostAddress}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "YOUR_REFRESH_TOKEN_HERE"
+}
+
+###
+
+### ==================== NOTIFICATION TESTS ====================
+
+### 10. LẤY DANH SÁCH NOTIFICATIONS (Cần đăng nhập)
+GET {{appcattoc_HostAddress}}/api/notifications
+Authorization: Bearer {{token}}
+
+###
+
+### 11. ĐÁNH DẤU NOTIFICATION ĐÃ ĐỌC
+PUT {{appcattoc_HostAddress}}/api/notifications/1/read
+Authorization: Bearer {{token}}
+
+###
