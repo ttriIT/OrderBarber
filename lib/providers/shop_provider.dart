@@ -40,11 +40,6 @@ class ShopProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Get featured shops
-  Future<List<ShopModel>> getFeaturedShops({int limit = 5}) async {
-    return await _shopService.getFeaturedShops(limit: limit);
-  }
-
   /// Search shops
   Future<List<ShopModel>> searchShops(String query) async {
     return await _shopService.searchShops(query);
@@ -57,8 +52,13 @@ class ShopProvider extends ChangeNotifier {
 
     try {
       _selectedShop = await _shopService.getShopById(shopId);
-      _services = await _shopService.getServicesByShopId(shopId);
+      // In Swagger, there might not be a direct "services by shop" yet, 
+      // but we use the common pattern if it exists or fallback to general services
       _barbers = await _shopService.getBarbersByShopId(shopId);
+      // Load general services for now as shop-specific might not be ready
+      if (_services.isEmpty) {
+        _services = await _shopService.getServices();
+      }
     } catch (e) {
       debugPrint('Error loading shop details: $e');
     }
@@ -82,26 +82,6 @@ class ShopProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Get featured services
-  Future<List<ServiceModel>> getFeaturedServices({int limit = 5}) async {
-    return await _shopService.getFeaturedServices(limit: limit);
-  }
-
-  /// Load service details
-  Future<void> loadServiceDetails(String serviceId) async {
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      _selectedService = await _shopService.getServiceById(serviceId);
-    } catch (e) {
-      debugPrint('Error loading service: $e');
-    }
-
-    _isLoading = false;
-    notifyListeners();
-  }
-
   /// Load barbers for a shop
   Future<void> loadBarbers(String shopId) async {
     _isLoading = true;
@@ -111,21 +91,6 @@ class ShopProvider extends ChangeNotifier {
       _barbers = await _shopService.getBarbersByShopId(shopId);
     } catch (e) {
       debugPrint('Error loading barbers: $e');
-    }
-
-    _isLoading = false;
-    notifyListeners();
-  }
-
-  /// Load available barbers
-  Future<void> loadAvailableBarbers(String shopId) async {
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      _barbers = await _shopService.getAvailableBarbers(shopId);
-    } catch (e) {
-      debugPrint('Error loading available barbers: $e');
     }
 
     _isLoading = false;
@@ -155,6 +120,48 @@ class ShopProvider extends ChangeNotifier {
     _selectedShop = null;
     _selectedService = null;
     _selectedBarber = null;
+    notifyListeners();
+  }
+
+  /// Get featured shops (client-side limit)
+  Future<List<ShopModel>> getFeaturedShops({int limit = 5}) async {
+    try {
+      final allShops = await _shopService.getShops();
+      return allShops.take(limit).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Get featured services (client-side limit)
+  Future<List<ServiceModel>> getFeaturedServices({int limit = 5}) async {
+    try {
+      final allServices = await _shopService.getServices();
+      return allServices.take(limit).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Load service details
+  Future<void> loadServiceDetails(String serviceId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      // Find within loaded services first
+      try {
+        _selectedService = _services.firstWhere((s) => s.id == serviceId);
+      } catch (_) {
+        // If not found, force reload all services (API might not have single service endpoint exposed yet)
+        await loadServices();
+        _selectedService = _services.firstWhere((s) => s.id == serviceId);
+      }
+    } catch (e) {
+      debugPrint('Error loading service details: $e');
+    }
+
+    _isLoading = false;
     notifyListeners();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/routes/app_routes.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/constants/app_constants.dart';
 import '../../core/widgets/custom_button.dart';
 import '../../core/widgets/custom_text_field.dart';
 import '../../providers/auth_provider.dart';
@@ -19,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
+  UserRole _selectedRole = UserRole.customer;
 
   @override
   void dispose() {
@@ -36,6 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             email: _emailController.text,
             phone: _phoneController.text,
             password: _passwordController.text,
+            role: _selectedRole,
           );
 
       if (success && mounted) {
@@ -126,6 +129,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 prefixIcon: const Icon(Icons.lock_outline),
                 validator: (value) => 
                   (value?.length ?? 0) < 6 ? 'Mật khẩu phải có ít nhất 6 ký tự' : null,
+              ),
+              const SizedBox(height: 20),
+
+              DropdownButtonFormField<UserRole>(
+                value: _selectedRole,
+                decoration: InputDecoration(
+                  labelText: 'Loại tài khoản',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  prefixIcon: const Icon(Icons.badge_outlined),
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: UserRole.customer,
+                    child: Text('Khách hàng'),
+                  ),
+                  DropdownMenuItem(
+                    value: UserRole.barber,
+                    child: Text('Thợ cắt tóc'),
+                  ),
+                  DropdownMenuItem(
+                    value: UserRole.manager,
+                    child: Text('Quản lý'),
+                  ),
+                  DropdownMenuItem(
+                    value: UserRole.admin,
+                    child: Text('Admin'),
+                  ),
+                ],
+                onChanged: (UserRole? value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedRole = value;
+                    });
+                  }
+                },
               ),
               const SizedBox(height: 32),
               

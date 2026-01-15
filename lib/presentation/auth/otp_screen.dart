@@ -23,22 +23,27 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   Future<void> _handleVerify() async {
-    if (_otpController.text.length == 6) {
-      final success = await context.read<AuthProvider>().verifyOTP(
-            widget.phone,
-            _otpController.text,
-          );
-
-      if (success && mounted) {
+    // API verification temporary removed as per Swagger update
+    if (_otpController.text.length >= 4) { // Allow 4-6 chars
+       // Simulate delay
+       // await Future.delayed(const Duration(seconds: 1));
+       
+       if (mounted) {
+         ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Xác thực giả định thành công'),
+            backgroundColor: Colors.green,
+          ),
+        );
         Navigator.pushReplacementNamed(context, AppRoutes.main);
-      } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
+       }
+    } else if (mounted) {
+       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Mã OTP không hợp lệ'),
             backgroundColor: Colors.red,
           ),
         );
-      }
     }
   }
 

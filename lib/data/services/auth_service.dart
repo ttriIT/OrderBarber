@@ -7,9 +7,9 @@ class AuthService {
 
   AuthService({ApiClient? client}) : _client = client ?? apiClient;
 
-  /// Login with username (phone) and password
+  /// Login with username and password
   Future<UserModel?> login({
-    required String username, // mapped from phone in UI
+    required String username,
     required String password,
   }) async {
     try {
@@ -20,13 +20,9 @@ class AuthService {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        // Save token
         if (data['token'] != null) {
           _client.setToken(data['token']);
         }
-        
-        // Parse user (data contains both user info and token at root level based on Swagger)
-        // Adjusting json to match UserModel.fromJson expectation (flat structure from API)
         return UserModel.fromJson(data);
       }
       return null;
@@ -41,6 +37,7 @@ class AuthService {
     required String email,
     required String phone,
     required String password,
+    UserRole role = UserRole.customer,
     String? username,
   }) async {
     try {
@@ -48,10 +45,9 @@ class AuthService {
         'fullName': fullName,
         'email': email,
         'phone': phone,
-        // Use phone as username if not provided
         'username': username ?? phone, 
         'password': password,
-        'role': UserRole.customer.name, // Swagger expects string
+        'role': role.name, // Pass role name string
       });
 
       if (response.statusCode == 201 || response.statusCode == 200) {
@@ -76,34 +72,16 @@ class AuthService {
       }
       return null;
     } catch (e) {
-      return null; // Return null instead of throwing for smooth UX
+      return null;
     }
   }
 
   /// Logout
   Future<void> logout() async {
     try {
-      // Best effort logout
       await _client.post('/Auth/logout'); 
     } catch (_) {}
     await _client.clearToken();
-  }
-
-  /// Verify OTP (Keep existing if used by UI, but endpoint might not exist in new API)
-  Future<bool> verifyOTP({
-    required String phone,
-    required String otp,
-  }) async {
-     // TODO: Check if this endpoint exists in new API. Keeping for now.
-    try {
-      final response = await _client.post('/Auth/verify-otp', data: {
-        'phone': phone,
-        'otp': otp,
-      });
-      return response.statusCode == 200;
-    } catch (e) {
-      return false;
-    }
   }
 
   /// Request password reset
@@ -115,34 +93,6 @@ class AuthService {
       return response.statusCode == 200;
     } catch (e) {
       return false;
-    }
-  }
-
-  /// Update profile
-  Future<UserModel?> updateProfile({
-    required String name,
-    String? email,
-    String? phone,
-    String? avatarUrl,
-    List<String>? skills,
-    int? yearsOfExperience,
-  }) async {
-    try {
-      final response = await _client.put('/Auth/profile', data: {
-        'name': name,
-        'email': email,
-        'phone': phone,
-        'avatarUrl': avatarUrl,
-        'skills': skills,
-        'yearsOfExperience': yearsOfExperience,
-      });
-
-      if (response.statusCode == 200) {
-        return UserModel.fromJson(response.data);
-      }
-      return null;
-    } catch (e) {
-      rethrow;
     }
   }
 

@@ -72,13 +72,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         experience = int.tryParse(_experienceController.text);
       }
 
-      final success = await authProvider.updateProfile(
-        name: _nameController.text,
-        email: _emailController.text,
-        phone: _phoneController.text,
-        skills: skills,
-        yearsOfExperience: experience,
-      );
+      // API update profile temporary removed
+      final success = true; 
+      // await authProvider.updateProfile(
+      //   name: _nameController.text,
+      //   email: _emailController.text,
+      //   phone: _phoneController.text,
+      //   skills: skills,
+      //   yearsOfExperience: experience,
+      // );
 
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

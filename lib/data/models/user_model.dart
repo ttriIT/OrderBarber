@@ -10,6 +10,7 @@ class UserModel {
   final UserRole role;
   final DateTime createdAt;
   final bool isActive;
+  final String? token;
 
   const UserModel({
     required this.id,
@@ -20,33 +21,40 @@ class UserModel {
     required this.role,
     required this.createdAt,
     this.isActive = true,
+    this.token,
   });
 
   /// Create from JSON
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      // API uses 'userId' (int) instead of 'id' (String)
+      // API uses 'userId' (int) or 'id'
       id: (json['userId'] ?? json['id'] ?? '').toString(),
-      // API uses 'fullName' instead of 'name'
+      // API uses 'fullName' or 'name'
       name: json['fullName'] ?? json['name'] ?? '',
       email: json['email'] ?? '',
-      phone: json['phone'] ?? '',
+      phone: json['phone'] ?? json['username'] ?? '',
       avatarUrl: json['avatarUrl'] ?? '',
       role: _parseUserRole(json['role']),
       createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
-      // API doesn't return isActive in profile, default to true
       isActive: json['isActive'] ?? true,
+      token: json['token'],
     );
   }
 
   static UserRole _parseUserRole(dynamic role) {
     if (role is int) {
+      // Mapping common integer roles if applicable, otherwise fallback
+      if (role == 0) return UserRole.customer;
+      if (role == 1) return UserRole.barber;
+      if (role == 2) return UserRole.manager;
+      if (role == 3) return UserRole.admin;
       return UserRole.values.length > role ? UserRole.values[role] : UserRole.customer;
     }
     if (role is String) {
       try {
+        final lowerRole = role.toLowerCase();
         return UserRole.values.firstWhere(
-          (e) => e.name.toLowerCase() == role.toLowerCase(),
+          (e) => e.name.toLowerCase() == lowerRole,
           orElse: () => UserRole.customer,
         );
       } catch (_) {
@@ -56,11 +64,10 @@ class UserModel {
     return UserRole.customer;
   }
 
-  /// Convert to JSON (TODO: implement when backend ready)
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': name,
+      'fullName': name,
       'email': email,
       'phone': phone,
       'avatarUrl': avatarUrl,
@@ -70,7 +77,6 @@ class UserModel {
     };
   }
 
-  /// Copy with new values
   UserModel copyWith({
     String? id,
     String? name,
@@ -80,6 +86,7 @@ class UserModel {
     UserRole? role,
     DateTime? createdAt,
     bool? isActive,
+    String? token,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -90,18 +97,12 @@ class UserModel {
       role: role ?? this.role,
       createdAt: createdAt ?? this.createdAt,
       isActive: isActive ?? this.isActive,
+      token: token ?? this.token,
     );
   }
 
-  /// Check if user is customer
   bool get isCustomer => role == UserRole.customer;
-
-  /// Check if user is barber
   bool get isBarber => role == UserRole.barber;
-
-  /// Check if user is manager
   bool get isManager => role == UserRole.manager;
-
-  /// Check if user is admin
   bool get isAdmin => role == UserRole.admin;
 }

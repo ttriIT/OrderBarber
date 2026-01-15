@@ -132,17 +132,17 @@ class BookingProvider extends ChangeNotifier {
 
     try {
       final booking = await _bookingService.createBooking(
-        customerId: customerId,
-        customerName: customerName,
         shopId: _selectedShop!.id,
         barberId: _selectedBarber!.id,
-        services: _selectedServices,
+        serviceIds: _selectedServices.map((s) => s.id).toList(),
         bookingDate: _selectedDate!,
         timeSlot: _selectedTimeSlot!,
         note: _note,
       );
 
-      _bookings.insert(0, booking);
+      if (booking != null) {
+        _bookings.insert(0, booking);
+      }
       _isLoading = false;
       notifyListeners();
       return booking;

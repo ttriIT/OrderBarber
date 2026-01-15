@@ -19,7 +19,7 @@ class _BarberSelectionScreenState extends State<BarberSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ShopProvider>().loadAvailableBarbers(widget.shopId);
+    context.read<ShopProvider>().loadBarbers(widget.shopId);
   }
 
   @override

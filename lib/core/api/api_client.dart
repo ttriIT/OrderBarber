@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import '../constants/app_constants.dart';
 import 'api_interceptors.dart';
 
@@ -11,14 +12,21 @@ class ApiClient {
         baseUrl: AppConstants.apiBaseUrl,
         connectTimeout: const Duration(milliseconds: AppConstants.connectionTimeout),
         receiveTimeout: const Duration(milliseconds: AppConstants.receiveTimeout),
+        validateStatus: (status) => true, // Let us handle status codes manually for debugging
       ),
     );
     _dio.interceptors.add(ApiInterceptors());
     
-    // Add logging in debug mode
-    // if (kDebugMode) {
-    //   _dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
-    // }
+    // Always add logging in debug mode to see what's happening
+    if (kDebugMode) {
+      _dio.interceptors.add(LogInterceptor(
+        responseBody: true, 
+        requestBody: true,
+        requestHeader: true,
+        responseHeader: false,
+        error: true,
+      ));
+    }
   }
 
   Dio get dio => _dio;
@@ -26,7 +34,9 @@ class ApiClient {
   // GET request
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
     try {
-      return await _dio.get(path, queryParameters: queryParameters);
+      final response = await _dio.get(path, queryParameters: queryParameters);
+      _checkError(response);
+      return response;
     } catch (e) {
       rethrow;
     }
@@ -35,7 +45,9 @@ class ApiClient {
   // POST request
   Future<Response> post(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
-      return await _dio.post(path, data: data, queryParameters: queryParameters);
+      final response = await _dio.post(path, data: data, queryParameters: queryParameters);
+      _checkError(response);
+      return response;
     } catch (e) {
       rethrow;
     }
@@ -44,7 +56,9 @@ class ApiClient {
   // PUT request
   Future<Response> put(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
-      return await _dio.put(path, data: data, queryParameters: queryParameters);
+      final response = await _dio.put(path, data: data, queryParameters: queryParameters);
+      _checkError(response);
+      return response;
     } catch (e) {
       rethrow;
     }
@@ -53,9 +67,21 @@ class ApiClient {
   // DELETE request
   Future<Response> delete(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
-      return await _dio.delete(path, data: data, queryParameters: queryParameters);
+      final response = await _dio.delete(path, data: data, queryParameters: queryParameters);
+      _checkError(response);
+      return response;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  void _checkError(Response response) {
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
     }
   }
 

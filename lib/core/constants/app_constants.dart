@@ -7,7 +7,7 @@ class AppConstants {
   static const String appVersion = '1.0.0';
 
   // API Base URL
-  static const String apiBaseUrl = 'https://conducive-reanna-manliest.ngrok-free.dev/api';
+  static const String apiBaseUrl = 'https://widesparklybag46.conveyor.cloud/api';
 
   // Pagination
   static const int defaultPageSize = 20;

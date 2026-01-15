@@ -60,6 +60,7 @@ class AuthProvider extends ChangeNotifier {
     required String email,
     required String phone,
     required String password,
+    UserRole role = UserRole.customer,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -72,6 +73,7 @@ class AuthProvider extends ChangeNotifier {
         email: email,
         phone: phone,
         password: password,
+        role: role,
       );
 
       if (user != null) {
@@ -89,22 +91,8 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  /// Verify OTP
-  Future<bool> verifyOTP(String phone, String otp) async {
-    _isLoading = true;
-    notifyListeners();
+  // Verify OTP removed (endpoint not supported)
 
-    try {
-      final result = await _authService.verifyOTP(phone: phone, otp: otp);
-      _isLoading = false;
-      notifyListeners();
-      return result;
-    } catch (e) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    }
-  }
 
   /// Request password reset
   Future<bool> requestPasswordReset(String email) async {
@@ -134,40 +122,8 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Update profile
-  Future<bool> updateProfile({
-    required String name,
-    String? email,
-    String? phone,
-    String? avatarUrl,
-    List<String>? skills,
-    int? yearsOfExperience,
-  }) async {
-    _isLoading = true;
-    notifyListeners();
+  // Update profile removed (endpoint not supported)
 
-    try {
-      final user = await _authService.updateProfile(
-        name: name,
-        email: email,
-        phone: phone,
-        avatarUrl: avatarUrl,
-        skills: skills,
-        yearsOfExperience: yearsOfExperience,
-      );
-
-      if (user != null) {
-        _currentUser = user;
-      }
-      _isLoading = false;
-      notifyListeners();
-      return user != null;
-    } catch (e) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    }
-  }
 
   /// Change password
   Future<bool> changePassword({
